@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/bson"
@@ -23,18 +22,16 @@ func Get_data_for_hist(client *mongo.Client, project_id string) []*ModelingOutpu
 	defer cancel()
 	collection := client.Database("vega").Collection("business.ModelingOutputValues")
 	filter := bson.D{{"project_id", project_id}}
-	var find_one_res ModelingOutputValue
-	err := collection.FindOne(ctx, filter).Decode(&find_one_res)
-	if err != nil {
-		log.Fatal(err)
-		os.Exit(1)
-	}
-	// fmt.Println(find_one_res)
+	// var find_one_res ModelingOutputValue
+	// err := collection.FindOne(ctx, filter).Decode(&find_one_res)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// 	os.Exit(1)
+	// }
 	cur, err := collection.Find(ctx, filter)
 	if err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Printf("Found a document: %+v\n", cur)
 	var results []*ModelingOutputValue
 
 	for cur.Next(ctx) {
